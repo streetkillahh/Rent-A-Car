@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using Rent_A_Car.Domain.Entities;
 using Rent_A_Car.Infrastructure.Persistence;
+using Rent_A_Car.Presentation.Views.Windows;
 
 namespace Rent_A_Car.Presentation.ViewModels
 {
@@ -60,7 +61,14 @@ namespace Rent_A_Car.Presentation.ViewModels
             _context.SaveChanges();
 
             MessageBox.Show("Автомобиль добавлен!");
-            Application.Current.MainWindow.Close();
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window is AddCarWindow)
+                {
+                    window.Close();
+                    break;
+                }
+            }
         }
     }
 }

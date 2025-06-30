@@ -14,7 +14,7 @@ public partial class App : Application
         base.OnStartup(e);
 
         var options = new DbContextOptionsBuilder<RentACarDbContext>()
-            .UseNpgsql("Host=localhost;Database=rentacar;Username=postgres;Password=yourpassword")
+            .UseNpgsql("Host=localhost;Port=5432;Database=rentacar;User Id=postgres;Password=streetadmin;")
             .Options;
 
         var context = new RentACarDbContext(options);
