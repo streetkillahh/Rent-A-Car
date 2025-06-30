@@ -45,10 +45,32 @@ public class CarDetailsViewModel : ViewModelBase
 
     private void OnSaveRental()
     {
+        if (RentalHours <= 0 || _car == null) return;
+
+        // Рассчитаем цену
+        decimal totalPrice = _car.PricePerHour * RentalHours;
+
+        // Получаем текущее время
+        DateTime rentalStartTime = DateTime.Now;
+
+        // Проверяем и преобразуем в UTC
+        if (rentalStartTime.Kind != DateTimeKind.Utc)
+        {
+            rentalStartTime = DateTime.SpecifyKind(rentalStartTime, DateTimeKind.Utc);
+        }
+
+        var rental = new Rental
+        {
+            CarId = _car.Id,
+            StartTime = rentalStartTime,
+            HoursRented = RentalHours,
+            TotalPrice = totalPrice
+        };
+
+        _context.Rentals.Add(rental);
         _car.IsAvailable = false;
         _context.SaveChanges();
 
-        MessageBox.Show($"Автомобиль {_car.Brand} {_car.Model} арендован на {RentalHours} часов.");
-        Application.Current.MainWindow.Close();
+        MessageBox.Show($"Автомобиль {_car.Brand} {_car.Model} арендован на {RentalHours} часов. Сумма: {totalPrice:C}");
     }
 }

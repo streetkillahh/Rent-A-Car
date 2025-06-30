@@ -18,12 +18,14 @@ public class MainPageViewModel : ViewModelBase
         Cars = new ObservableCollection<Car>(_context.Cars.ToList());
         AddCarCommand = new RelayCommand(OpenAddCarWindow);
         OpenCarDetailsCommand = new RelayCommand(OpenCarDetails);
+        ShowStatisticsCommand = new RelayCommand(ShowStatistics);
     }
 
     public ObservableCollection<Car> Cars { get; set; }
 
     public ICommand AddCarCommand { get; }
     public ICommand OpenCarDetailsCommand { get; }
+    public ICommand ShowStatisticsCommand { get; }
 
     private Car _selectedCar;
     public Car SelectedCar
@@ -67,9 +69,19 @@ public class MainPageViewModel : ViewModelBase
         {
             DataContext = new CarDetailsViewModel(_context, SelectedCar)
         };
-        Application.Current.MainWindow.Close();
         Application.Current.MainWindow = new MainWindow();
         ((MainWindow)Application.Current.MainWindow).MainFrame.Navigate(detailsPage);
+        Application.Current.MainWindow.Show();
+    }
+    private void ShowStatistics()
+    {
+        var statsPage = new StatisticsPage(_context)
+        {
+            DataContext = new StatisticsViewModel(_context)
+        };
+        Application.Current.MainWindow.Close();
+        Application.Current.MainWindow = new MainWindow();
+        ((MainWindow)Application.Current.MainWindow).MainFrame.Navigate(statsPage);
         Application.Current.MainWindow.Show();
     }
 }
