@@ -1,14 +1,27 @@
-﻿using System.Configuration;
+﻿using Rent_A_Car.Presentation.Views;
+using System.Configuration;
 using System.Data;
 using System.Windows;
+using Microsoft.EntityFrameworkCore;
+using Rent_A_Car.Infrastructure.Persistence;
 
-namespace Rent_A_Car
+namespace Rent_A_Car;
+
+public partial class App : Application
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+    protected override void OnStartup(StartupEventArgs e)
     {
-    }
+        base.OnStartup(e);
 
+        var options = new DbContextOptionsBuilder<RentACarDbContext>()
+            .UseNpgsql("Host=localhost;Database=rentacar;Username=postgres;Password=yourpassword")
+            .Options;
+
+        var context = new RentACarDbContext(options);
+        context.Database.EnsureCreated();
+
+        var mainWindow = new MainWindow();
+        mainWindow.MainFrame.Navigate(new MainPage(context));
+        mainWindow.Show();
+    }
 }

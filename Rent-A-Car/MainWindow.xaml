@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="Rent-A-Car" Height="600" Width="1000">
     <Grid>
-
+        <Frame Name="MainFrame" NavigationUIVisibility="Hidden" />
     </Grid>
 </Window>
