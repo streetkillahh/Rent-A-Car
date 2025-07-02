@@ -1,13 +1,16 @@
 ﻿<Window x:Class="Rent_A_Car.Presentation.Views.Windows.AddCarWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Добавить автомобиль" Height="200" Width="400"
+        Title="Добавить автомобиль" Height="300" Width="400"
         Background="#1E1E1E">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
-            <RowDefinition  Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
             <RowDefinition />
+            
         </Grid.RowDefinitions>
 
         <Grid VerticalAlignment="Center">
@@ -37,7 +40,38 @@
                      HorizontalAlignment="Left"
                      Margin="10 0" Width="160"/>
         </Grid>
-        <Button Grid.Row="2"
+        
+        <Grid Grid.Row="2"
+      VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0"
+               Text="Шаг для скидки" 
+               VerticalAlignment="Center"/>
+            <TextBox Grid.Column="1"
+             Text="{Binding DiscountStepHours}" 
+             HorizontalAlignment="Left"
+             Margin="10 0" Width="160"/>
+        </Grid>
+        
+        <Grid Grid.Row="3"
+      VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0"
+               Text="Скидка за шаг" 
+               VerticalAlignment="Center"/>
+            <TextBox Grid.Column="1"
+             Text="{Binding DiscountPerStep}" 
+             HorizontalAlignment="Left"
+             Margin="10 0" Width="160"/>
+        </Grid>
+        
+        <Button Grid.Row="4"
                 Content="Сохранить" 
                 Command="{Binding SaveCommand}" 
                 HorizontalAlignment="Center" 

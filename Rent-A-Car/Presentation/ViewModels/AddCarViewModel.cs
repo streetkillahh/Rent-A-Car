@@ -17,8 +17,9 @@ namespace Rent_A_Car.Presentation.ViewModels
         }
 
         private string _name = string.Empty;
-        private decimal _pricePerHour;
-        private bool _isAvailable;
+        private int _pricePerHour;
+        private int _discountStepHours;
+        private int _discountPerStep;
 
         public string Name
         {
@@ -26,10 +27,22 @@ namespace Rent_A_Car.Presentation.ViewModels
             set => SetProperty(ref _name, value);
         }
 
-        public decimal PricePerHour
+        public int PricePerHour
         {
             get => _pricePerHour;
             set => SetProperty(ref _pricePerHour, value);
+        }
+
+        public int DiscountStepHours
+        {
+            get => _discountStepHours;
+            set => SetProperty(ref _discountStepHours, value);
+        }
+
+        public int DiscountPerStep
+        {
+            get => _discountPerStep;
+            set => SetProperty(ref _discountPerStep, value);
         }
 
         public ICommand SaveCommand { get; }
@@ -40,6 +53,8 @@ namespace Rent_A_Car.Presentation.ViewModels
             {
                 Name = Name,
                 PricePerHour = PricePerHour,
+                DiscountStepHours = DiscountStepHours,
+                DiscountPerStep = DiscountPerStep,
                 IsAvailable = true
             };
 
