@@ -10,7 +10,7 @@
 
         <Button Content="Вернуться"
                 HorizontalAlignment="Left"
-                Width="100"
+                Width="120"
                 Click="Button_Back"/>
 
         <StackPanel Grid.Row="1" Margin="5" HorizontalAlignment="Left">
