@@ -16,21 +16,14 @@ namespace Rent_A_Car.Presentation.ViewModels
             SaveCommand = new RelayCommand(OnSave);
         }
 
-        private string _brand = string.Empty;
-        private string _model = string.Empty;
+        private string _name = string.Empty;
         private decimal _pricePerHour;
         private bool _isAvailable;
 
-        public string Brand
+        public string Name
         {
-            get => _brand;
-            set => SetProperty(ref _brand, value);
-        }
-
-        public string Model
-        {
-            get => _model;
-            set => SetProperty(ref _model, value);
+            get => _name;
+            set => SetProperty(ref _name, value);
         }
 
         public decimal PricePerHour
@@ -51,8 +44,7 @@ namespace Rent_A_Car.Presentation.ViewModels
         {
             var car = new Car
             {
-                Brand = Brand,
-                Model = Model,
+                Name = Name,
                 PricePerHour = PricePerHour,
                 IsAvailable = IsAvailable
             };

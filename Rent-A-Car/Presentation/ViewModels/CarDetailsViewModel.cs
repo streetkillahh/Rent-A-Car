@@ -10,7 +10,7 @@ public class CarDetailsViewModel : ViewModelBase
     private readonly RentACarDbContext _context;
     private readonly Car _car;
     private int _rentalHours;
-
+    public string CarName => _car?.Name ?? "Неизвестно";
     public Car Car => _car;
     public int RentalHours
     {
@@ -71,6 +71,6 @@ public class CarDetailsViewModel : ViewModelBase
         _car.IsAvailable = false;
         _context.SaveChanges();
 
-        MessageBox.Show($"Автомобиль {_car.Brand} {_car.Model} арендован на {RentalHours} часов. Сумма: {totalPrice:C}");
+        MessageBox.Show($"Автомобиль {_car.Name} арендован на {RentalHours} часов. Сумма: {totalPrice:C}");
     }
 }
