@@ -4,15 +4,28 @@
       Title="Главная">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Button Content="Добавить автомобиль" 
-                Command="{Binding AddCarCommand}" 
-                HorizontalAlignment="Left" 
-                Margin="10" />
-
+        <!-- Верхние кнопки -->
+        <StackPanel Margin="10"
+                    Grid.Row="0"
+                    Orientation="Horizontal"
+                    Width="auto"
+                    HorizontalAlignment="Right">
+            <Button HorizontalAlignment="Left"
+                    Content="Добавить автомобиль" 
+                    Command="{Binding AddCarCommand}" 
+                    Width="auto"
+                    Margin="5"/>
+            <Button HorizontalAlignment="Right"
+                    Content="Статистика"
+                    Width="auto"
+                    Margin="5"/>
+        </StackPanel>
+        
+        <!--Список авто -->
         <DataGrid ItemsSource="{Binding Cars}" 
                   SelectedItem="{Binding SelectedCar}" 
                   AutoGenerateColumns="False" 
@@ -20,10 +33,12 @@
                   Grid.Row="1"
                   Margin="10">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Марка" Binding="{Binding Brand}" />
-                <DataGridTextColumn Header="Модель" Binding="{Binding Model}" />
-                <DataGridTextColumn Header="Цена/час" Binding="{Binding PricePerHour}" />
-                <DataGridTextColumn Header="Доступен" Binding="{Binding IsAvailable}" />
+                <DataGridTextColumn Header="Название" 
+                                    Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Цена/час" 
+                                    Binding="{Binding PricePerHour}" />
+                <DataGridTextColumn Header="Доступен" 
+                                    Binding="{Binding IsAvailable}" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

@@ -32,12 +32,6 @@ namespace Rent_A_Car.Presentation.ViewModels
             set => SetProperty(ref _pricePerHour, value);
         }
 
-        public bool IsAvailable
-        {
-            get => _isAvailable;
-            set => SetProperty(ref _isAvailable, value);
-        }
-
         public ICommand SaveCommand { get; }
 
         private void OnSave()
@@ -46,7 +40,7 @@ namespace Rent_A_Car.Presentation.ViewModels
             {
                 Name = Name,
                 PricePerHour = PricePerHour,
-                IsAvailable = IsAvailable
+                IsAvailable = true
             };
 
             _context.Cars.Add(car);

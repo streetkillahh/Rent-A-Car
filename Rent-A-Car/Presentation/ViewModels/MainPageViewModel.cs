@@ -69,9 +69,7 @@ public class MainPageViewModel : ViewModelBase
         {
             DataContext = new CarDetailsViewModel(_context, SelectedCar)
         };
-        Application.Current.MainWindow = new MainWindow();
         ((MainWindow)Application.Current.MainWindow).MainFrame.Navigate(detailsPage);
-        Application.Current.MainWindow.Show();
     }
     private void ShowStatistics()
     {

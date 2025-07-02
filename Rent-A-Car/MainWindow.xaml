@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Rent_A_Car"
         mc:Ignorable="d"
-        Title="Rent-A-Car" Height="600" Width="1000">
+        Title="Rent-A-Car" Height="600" Width="1000"
+        Background="#1E1E1E">
     <Grid>
         <Frame Name="MainFrame" NavigationUIVisibility="Hidden" />
     </Grid>

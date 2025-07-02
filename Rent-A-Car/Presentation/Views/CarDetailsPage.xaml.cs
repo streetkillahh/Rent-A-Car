@@ -8,4 +8,9 @@ public partial class CarDetailsPage : Page
     {
         InitializeComponent();
     }
+
+    private void Button_Back(object sender, System.Windows.RoutedEventArgs e)
+    {
+        NavigationService.GoBack();
+    }
 }
