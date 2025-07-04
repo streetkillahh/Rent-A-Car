@@ -13,6 +13,7 @@ namespace Rent_A_Car.Presentation.ViewModels
         public AddCarViewModel(RentACarDbContext context)
         {
             _context = context;
+            SelectImageCommand = new RelayCommand(OnSelectImage);
             SaveCommand = new RelayCommand(OnSave);
         }
 
@@ -20,6 +21,9 @@ namespace Rent_A_Car.Presentation.ViewModels
         private int _pricePerHour;
         private int _discountStepHours;
         private int _discountPerStep;
+        private int _minRentalHours;
+        private int _maxRentalHours;
+        private string _imagePath = string.Empty;
 
         public string Name
         {
@@ -45,17 +49,63 @@ namespace Rent_A_Car.Presentation.ViewModels
             set => SetProperty(ref _discountPerStep, value);
         }
 
-        public ICommand SaveCommand { get; }
+        public int MinRentalHours
+        {
+            get => _minRentalHours;
+            set => SetProperty(ref _minRentalHours, value);
+        }
 
+        public int MaxRentalHours
+        {
+            get => _maxRentalHours;
+            set => SetProperty(ref _maxRentalHours, value);
+        }
+
+        public string ImagePath
+        {
+            get => _imagePath;
+            set => SetProperty(ref _imagePath, value);
+        }
+
+        public ICommand SelectImageCommand { get; }
+        private void OnSelectImage()
+        {
+            var openFileDialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = "Изображения|*.bmp;*.jpg;*.jpeg;*.png"
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                ImagePath = openFileDialog.FileName;
+            }
+        }
+        public ICommand SaveCommand { get; }
+        
         private void OnSave()
         {
+            if (string.IsNullOrWhiteSpace(Name))
+            {
+                MessageBox.Show("Введите название автомобиля.");
+                return;
+            }
+
+            if (MinRentalHours < 1 || MaxRentalHours < MinRentalHours)
+            {
+                MessageBox.Show("Мин. часы должны быть ≥ 1, Макс. - 99.");
+                return;
+            }
+
             var car = new Car
             {
                 Name = Name,
                 PricePerHour = PricePerHour,
+                MinRentalHours = MinRentalHours,
+                MaxRentalHours = MaxRentalHours,
                 DiscountStepHours = DiscountStepHours,
                 DiscountPerStep = DiscountPerStep,
-                IsAvailable = true
+                IsAvailable = true,
+                ImagePath = ImagePath
             };
 
             _context.Cars.Add(car);

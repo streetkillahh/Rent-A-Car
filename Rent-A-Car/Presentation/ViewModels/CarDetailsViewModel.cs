@@ -20,7 +20,7 @@ namespace Rent_A_Car.Presentation.ViewModels
             get => _rentalHours;
             set
             {
-                if (value >= 1 && value <= 99)
+                if (value >= Car.MinRentalHours && value <= Car.MaxRentalHours)
                 {
                     SetProperty(ref _rentalHours, value);
                     OnPropertyChanged(nameof(TotalPrice));
@@ -34,6 +34,11 @@ namespace Rent_A_Car.Presentation.ViewModels
             {
                 if (_car == null || RentalHours < 1)
                     return 0;
+
+                if (_car.DiscountStepHours == 0 || _car.DiscountPerStep == 0)
+                {
+                    return _car.PricePerHour * RentalHours;
+                }
 
                 int discountSteps = RentalHours / _car.DiscountStepHours;
                 int discountPerHour = discountSteps * _car.DiscountPerStep;
@@ -55,7 +60,7 @@ namespace Rent_A_Car.Presentation.ViewModels
         {
             _context = context;
             _car = car;
-            RentalHours = 1;
+            RentalHours = Car.IsAvailable ? Car.MinRentalHours : 0;
 
             LastRentals = new ObservableCollection<Rental>(
                 _context.Rentals
@@ -72,13 +77,13 @@ namespace Rent_A_Car.Presentation.ViewModels
 
         private void OnIncreaseHours()
         {
-            if (RentalHours < 99)
+            if (RentalHours < Car.MaxRentalHours)
                 RentalHours++;
         }
 
         private void OnDecreaseHours()
         {
-            if (RentalHours > 1)
+            if (RentalHours > Car.MinRentalHours)
                 RentalHours--;
         }
 
