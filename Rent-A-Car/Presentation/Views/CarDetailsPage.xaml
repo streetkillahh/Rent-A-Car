@@ -4,88 +4,121 @@
       Background="#1E1E1E">
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
+
+        <!-- Левая колонка -->
         <Grid>
             <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
 
-        <Button Content="Вернуться"
-                HorizontalAlignment="Left"
-                Width="120"
-                Click="Button_Back"/>
+            <Button Content="Вернуться"
+                    HorizontalAlignment="Left"
+                    Width="120"
+                    Click="Button_Back"/>
 
-        <StackPanel Grid.Row="1" Margin="5" HorizontalAlignment="Left">
-            <!-- Информация об автомобиле -->
-            <TextBlock Text="Название:" />
-            <TextBlock Text="{Binding Car.Name}" />
+            <StackPanel Grid.Row="1" Margin="5" HorizontalAlignment="Left">
+                <!-- Информация об автомобиле -->
+                <TextBlock Text="Название:" />
+                <TextBlock Text="{Binding Car.Name}" />
 
-            <TextBlock Text="Цена в час:" />
-            <TextBlock Text="{Binding Car.PricePerHour}" />
-            
-            <TextBlock Text="Мин. часов аренды:" />
-            <TextBlock Text="{Binding Car.MinRentalHours}" />
+                <TextBlock Text="Цена в час:" />
+                <TextBlock Text="{Binding Car.PricePerHour}" />
 
-            <TextBlock Text="Макс. часов аренды:" />
-            <TextBlock Text="{Binding Car.MaxRentalHours}" />
+                <TextBlock Text="Мин. часов аренды:" />
+                <TextBlock Text="{Binding Car.MinRentalHours}" />
 
-            <TextBlock Text="Доступен:" />
-            <TextBlock Text="{Binding Car.IsAvailable}" />
+                <TextBlock Text="Макс. часов аренды:" />
+                <TextBlock Text="{Binding Car.MaxRentalHours}" />
 
-            <!-- Блок с арендой -->
-            <TextBlock Text="Количество часов аренды:" Margin="5" />
-            <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
-                <Button Content="-" Command="{Binding DecreaseHoursCommand}" Width="30" />
-                <TextBlock Text="{Binding RentalHours}" 
-                           VerticalAlignment="Center" 
-                           HorizontalAlignment="Center" 
-                           Width="50" 
-                           TextAlignment="Center"
-                           Margin="5"/>
-                <Button Content="+" Command="{Binding IncreaseHoursCommand}" Width="30" />
-            </StackPanel>
+                <TextBlock Text="Доступен:" />
+                <TextBlock Text="{Binding Car.IsAvailable}" />
 
-            <!-- Итоговая стоимость -->
-            <TextBlock Text="{Binding TotalPrice, 
-                StringFormat=Итоговая стоимость: {0:C2}}" 
-                       FontSize="16" 
-                       Margin="5" />
+                <!-- Блок с арендой -->
+                <TextBlock Text="Количество часов аренды:" Margin="5" />
+                <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
+                    <Button Content="-" Command="{Binding DecreaseHoursCommand}" Width="30" />
+                    <TextBlock Text="{Binding RentalHours}" 
+                               VerticalAlignment="Center" 
+                               HorizontalAlignment="Center" 
+                               Width="50" 
+                               TextAlignment="Center"
+                               Margin="5"/>
+                    <Button Content="+" Command="{Binding IncreaseHoursCommand}" Width="30" />
+                </StackPanel>
 
-            <!-- История аренды -->
-            <TextBlock Text="Последние аренды:" 
-                       Margin="5,10,0,0" 
-                       FontWeight="Bold" />
+                <!-- Итоговая стоимость -->
+                <TextBlock Text="{Binding TotalPrice, StringFormat=Итоговая стоимость: {0:C2}}" 
+                           FontSize="16" 
+                           Margin="5" />
+
+                <!-- История аренды -->
+                <TextBlock Text="Последние аренды:" 
+                           Margin="5,10,0,0" 
+                           FontWeight="Bold" />
 
                 <DataGrid ItemsSource="{Binding LastRentals}"
-                      AutoGenerateColumns="False"
-                      IsReadOnly="True"
-                      BorderThickness="0"
-                      Background="#2E2E2E"
-                      RowBackground="#222222"
-                      AlternatingRowBackground="#2A2A2A"
-                      HorizontalAlignment="Stretch"
-                      Margin="5,0,5,10">
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          BorderThickness="0"
+                          Background="#2E2E2E"
+                          RowBackground="#222222"
+                          AlternatingRowBackground="#2A2A2A"
+                          HorizontalAlignment="Stretch"
+                          Margin="5,0,5,10"
+                          MinHeight="100"
+                          MaxHeight="200">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Дата" 
-                                        Binding="{Binding StartTime, StringFormat=dd.MM.yyyy HH:mm}" />
+                                            Binding="{Binding StartTime, StringFormat=dd.MM.yyyy HH:mm}" />
                         <DataGridTextColumn Header="Часов" 
-                                        Binding="{Binding HoursRented}" />
+                                            Binding="{Binding HoursRented}" />
                         <DataGridTextColumn Header="Сумма" 
-                                        Binding="{Binding TotalPrice, StringFormat=C2}" />
+                                            Binding="{Binding TotalPrice, StringFormat=C2}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>
         </Grid>
-        <StackPanel Grid.Column="1">
-            <!-- Предпросмотр изображения -->
+
+        <!-- Правая колонка (изображение и выбор времени) -->
+        <StackPanel Grid.Column="1" Margin="10" Width="300">
+            <!-- Изображение -->
             <Image Source="{Binding Car.ImagePath}" 
                    Width="300" 
                    Height="200" 
                    Stretch="UniformToFill" 
                    Margin="0,10,0,0"/>
+
+            <!-- Выбор даты -->
+            <TextBlock Text="Дата аренды:" Margin="5" />
+            <DatePicker SelectedDate="{Binding SelectedDate}" 
+                        Margin="5" 
+                        Width="150" />
+
+            <!-- Выбор времени -->
+            <TextBlock Text="Время аренды:" />
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock Text="Час:" Width="30" Margin="5,0" />
+                <TextBox x:Name="HourTextBox"
+                         Text="{Binding HourText}"
+                         Width="50"
+                         Margin="5,0"
+                         MaxLength="2"
+                         InputScope="Number" />
+
+                <TextBlock Text="Минута:" Width="50" Margin="10,0" />
+                <TextBox x:Name="MinuteTextBox"
+                         Text="{Binding MinuteText}"
+                         Width="50"
+                         Margin="5,0"
+                         MaxLength="2"
+                         InputScope="Number" />
+            </StackPanel>
+
+            <!-- Кнопка сохранения -->
             <Button Content="Сохранить аренду" 
                     Command="{Binding SaveRentalCommand}"
                     Width="Auto"

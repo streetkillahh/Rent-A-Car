@@ -65,10 +65,16 @@ public class MainPageViewModel : ViewModelBase
     {
         if (SelectedCar == null) return;
 
+        var car = _context.Cars
+            .FirstOrDefault(c => c.Id == SelectedCar.Id);
+
+        if (car == null) return;
+
         var detailsPage = new CarDetailsPage
         {
-            DataContext = new CarDetailsViewModel(_context, SelectedCar)
+            DataContext = new CarDetailsViewModel(_context, car)
         };
+
         ((MainWindow)Application.Current.MainWindow).MainFrame.Navigate(detailsPage);
     }
     private void ShowStatistics()
