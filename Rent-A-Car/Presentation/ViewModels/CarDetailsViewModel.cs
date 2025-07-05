@@ -127,20 +127,20 @@ namespace Rent_A_Car.Presentation.ViewModels
             }
         }
 
-        public bool IsCarAvailable
+        private bool IsCarAvailable()
         {
-            get
-            {
-                if (!_car.IsAvailable)
-                    return false;
+            _car.CheckAndUpdateAvailability();
+            _context.SaveChanges();
 
-                var utcSelectedTime = DateTime.SpecifyKind(SelectedStartTime, DateTimeKind.Local).ToUniversalTime();
+            var utcSelectedTime = DateTime.SpecifyKind(SelectedStartTime, DateTimeKind.Local).ToUniversalTime();
 
-                if (_car.EndOfRentalTime.HasValue && _car.EndOfRentalTime.Value > utcSelectedTime)
-                    return false;
+            if (!_car.IsAvailable)
+                return false;
 
-                return true;
-            }
+            if (_car.EndOfRentalTime.HasValue && _car.EndOfRentalTime.Value > utcSelectedTime)
+                return false;
+
+            return true;
         }
 
         public string EndOfRentalTimeDisplay
@@ -166,6 +166,9 @@ namespace Rent_A_Car.Presentation.ViewModels
         {
             _context = context;
             _car = car;
+
+            _car.CheckAndUpdateAvailability();
+            _context.SaveChanges();
 
             HourText = DateTime.Now.Hour.ToString("00");
             MinuteText = DateTime.Now.Minute.ToString("00");
@@ -230,7 +233,7 @@ namespace Rent_A_Car.Presentation.ViewModels
             if (RentalHours <= 0 || _car == null || !IsValidTime())
                 return;
 
-            if (!IsCarAvailable)
+            if (!IsCarAvailable())
                 return;
 
             var utcStartTime = DateTime.SpecifyKind(SelectedStartTime, DateTimeKind.Local).ToUniversalTime();

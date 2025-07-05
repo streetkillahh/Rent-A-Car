@@ -15,10 +15,19 @@ public class MainPageViewModel : ViewModelBase
     public MainPageViewModel(RentACarDbContext context)
     {
         _context = context;
-        Cars = new ObservableCollection<Car>(_context.Cars.ToList());
+        Cars = new ObservableCollection<Car>(
+        _context.Cars.AsEnumerable().Select(c =>
+        {
+            c.CheckAndUpdateAvailability();
+            return c;
+        })
+        .ToList()
+        );
         AddCarCommand = new RelayCommand(OpenAddCarWindow);
         OpenCarDetailsCommand = new RelayCommand(OpenCarDetails);
         ShowStatisticsCommand = new RelayCommand(ShowStatistics);
+
+        _context.SaveChanges();
     }
 
     public ObservableCollection<Car> Cars { get; set; }

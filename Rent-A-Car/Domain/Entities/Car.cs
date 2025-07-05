@@ -1,4 +1,4 @@
-﻿namespace Rent_A_Car.Domain.Entities;
+﻿using Rent_A_Car.Domain.Entities;
 
 public class Car
 {
@@ -14,4 +14,13 @@ public class Car
     public string? ImagePath { get; set; }
 
     public ICollection<Rental> Rentals { get; set; } = new List<Rental>();
+
+    public void CheckAndUpdateAvailability()
+    {
+        if (EndOfRentalTime.HasValue && EndOfRentalTime.Value <= DateTime.UtcNow)
+        {
+            IsAvailable = true;
+            EndOfRentalTime = null;
+        }
+    }
 }
