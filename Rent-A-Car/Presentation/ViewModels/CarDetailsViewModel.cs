@@ -127,6 +127,35 @@ namespace Rent_A_Car.Presentation.ViewModels
             }
         }
 
+        public bool IsCarAvailable
+        {
+            get
+            {
+                if (!_car.IsAvailable)
+                    return false;
+
+                var utcSelectedTime = DateTime.SpecifyKind(SelectedStartTime, DateTimeKind.Local).ToUniversalTime();
+
+                if (_car.EndOfRentalTime.HasValue && _car.EndOfRentalTime.Value > utcSelectedTime)
+                    return false;
+
+                return true;
+            }
+        }
+
+        public string EndOfRentalTimeDisplay
+        {
+            get
+            {
+                if (!_car.IsAvailable && _car.EndOfRentalTime.HasValue)
+                {
+                    var endOfRental = DateTime.SpecifyKind(_car.EndOfRentalTime.Value, DateTimeKind.Utc).ToLocalTime();
+                    return $"Автомобиль будет доступен с {endOfRental:dd.MM.yyyy HH:mm}";
+                }
+                return string.Empty;
+            }
+        }
+
         public ObservableCollection<Rental> LastRentals { get; }
 
         public ICommand IncreaseHoursCommand { get; }
@@ -138,12 +167,10 @@ namespace Rent_A_Car.Presentation.ViewModels
             _context = context;
             _car = car;
 
-            // Инициализируем текущим временем
             HourText = DateTime.Now.Hour.ToString("00");
             MinuteText = DateTime.Now.Minute.ToString("00");
             SelectedDate = DateTime.Now.Date;
 
-            // Устанавливаем начальное значение аренды
             int minHours = Car.MinRentalHours < 1 ? 1 : Car.MinRentalHours;
             int maxHours = Car.MaxRentalHours < 1 ? 99 : Car.MaxRentalHours;
 
@@ -151,7 +178,7 @@ namespace Rent_A_Car.Presentation.ViewModels
                 ? Math.Clamp(minHours, 1, maxHours)
                 : 0;
 
-            // Загружаем последние аренды
+            // Загрузка истории аренд
             LastRentals = new ObservableCollection<Rental>(
                 _context.Rentals
                     .Where(r => r.CarId == _car.Id)
@@ -203,7 +230,7 @@ namespace Rent_A_Car.Presentation.ViewModels
             if (RentalHours <= 0 || _car == null || !IsValidTime())
                 return;
 
-            if (!IsCarAvailable())
+            if (!IsCarAvailable)
                 return;
 
             var utcStartTime = DateTime.SpecifyKind(SelectedStartTime, DateTimeKind.Local).ToUniversalTime();
@@ -223,20 +250,18 @@ namespace Rent_A_Car.Presentation.ViewModels
 
             LastRentals.Insert(0, rental);
 
+            OnPropertyChanged(nameof(IsCarAvailable));
+            OnPropertyChanged(nameof(EndOfRentalTimeDisplay));
+            OnPropertyChangedForCar();
+
             MessageBox.Show($"Автомобиль {_car.Name} арендован на {RentalHours} часов. Сумма: {TotalPrice:C}");
         }
 
-        private bool IsCarAvailable()
+        private void OnPropertyChangedForCar()
         {
-            if (!_car.IsAvailable)
-                return false;
-
-            var utcSelectedTime = DateTime.SpecifyKind(SelectedStartTime, DateTimeKind.Local).ToUniversalTime();
-
-            if (_car.EndOfRentalTime.HasValue && _car.EndOfRentalTime.Value > utcSelectedTime)
-                return false;
-
-            return true;
+            OnPropertyChanged(nameof(Car));
+            OnPropertyChanged(nameof(EndOfRentalTimeDisplay));
+            OnPropertyChanged(nameof(IsCarAvailable));
         }
     }
 }
