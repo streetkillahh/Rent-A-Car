@@ -88,13 +88,11 @@ public class MainPageViewModel : ViewModelBase
     }
     private void ShowStatistics()
     {
-        var statsPage = new StatisticsPage(_context)
+        var statsPage = new StatisticsPage
         {
             DataContext = new StatisticsViewModel(_context)
         };
-        Application.Current.MainWindow.Close();
-        Application.Current.MainWindow = new MainWindow();
+
         ((MainWindow)Application.Current.MainWindow).MainFrame.Navigate(statsPage);
-        Application.Current.MainWindow.Show();
     }
 }

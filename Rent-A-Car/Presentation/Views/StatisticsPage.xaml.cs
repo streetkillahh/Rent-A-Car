@@ -1,14 +1,13 @@
-﻿using Rent_A_Car.Infrastructure.Persistence;
-using Rent_A_Car.Presentation.ViewModels;
+﻿using Rent_A_Car.Presentation.ViewModels;
 using System.Windows.Controls;
 
-namespace Rent_A_Car.Presentation.Views;
-
-public partial class StatisticsPage : Page
+namespace Rent_A_Car.Presentation.Views
 {
-    public StatisticsPage(RentACarDbContext context)
+    public partial class StatisticsPage : Page
     {
-        InitializeComponent();
-        DataContext = new StatisticsViewModel(context);
+        public StatisticsPage()
+        {
+            InitializeComponent();
+        }
     }
 }

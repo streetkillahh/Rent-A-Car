@@ -19,8 +19,9 @@
                     Command="{Binding AddCarCommand}" 
                     Width="auto"
                     Margin="5"/>
-            <Button HorizontalAlignment="Right"
-                    Content="Статистика"
+            <Button Content="Статистика"
+                    Command="{Binding ShowStatisticsCommand}"
+                    HorizontalAlignment="Right"
                     Width="auto"
                     Margin="5"/>
         </StackPanel>
